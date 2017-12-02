@@ -1,11 +1,14 @@
 package com.qs.mvc.controller;
 
 import com.qs.mvc.Entity.DemoObj;
+import com.qs.mvc.service.DemoService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
@@ -14,6 +17,9 @@ import java.util.Map;
 @RestController  //组合注解，@Controller和ResponseBody
 @RequestMapping("/rest")
 public class DemoRestController {
+
+    @Resource
+    private DemoService demoService;
 
     /**
      * 测试6：测试返回对象json字符串；请求url：http://localhost:8080/mvc/rest/getJson?id=1&name=zhangsan
@@ -40,6 +46,11 @@ public class DemoRestController {
         Map<String, Object> resultMap = model.asMap();
         String msg = resultMap.get("msg").toString();
         return "id=" + id + "; name=" + name + "; birth=" + birth.toLocaleString();
+    }
+
+    @RequestMapping(value = "/testRest",produces = "text/plain;charset=UTF-8")
+    public String testRest(){
+        return demoService.saySomething();
     }
 
 }

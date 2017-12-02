@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
+@EnableScheduling  //在MyMvcConfig上开始支持计划任务的支持
 @ComponentScan("com.qs.mvc")
 public class MyMvcConfig extends WebMvcConfigurerAdapter {
 
@@ -80,6 +82,8 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/converter").setViewName("/converter");
         //测试远程推送服务--SSE
         registry.addViewController("/sse").setViewName("/sse");
+        //测试远程推送服务--异步方法实现形式
+        registry.addViewController("/async").setViewName("/async");
     }
 
     /**

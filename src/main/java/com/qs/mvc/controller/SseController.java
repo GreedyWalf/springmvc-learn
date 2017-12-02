@@ -27,6 +27,6 @@ public class SseController {
             e.printStackTrace();
         }
 
-        return "data:Testing 1,2,3" + random.nextInt() + "\n\n";
+        return "data:Testing--" + random.nextInt() + "\n\n";
     }
 }
