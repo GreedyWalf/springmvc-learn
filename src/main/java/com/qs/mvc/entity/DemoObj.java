@@ -1,4 +1,4 @@
-package com.qs.mvc.Entity;
+package com.qs.mvc.entity;
 
 public class DemoObj{
     private Long id;

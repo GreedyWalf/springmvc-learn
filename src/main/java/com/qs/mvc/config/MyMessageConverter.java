@@ -1,6 +1,6 @@
 package com.qs.mvc.config;
 
-import com.qs.mvc.Entity.DemoObj;
+import com.qs.mvc.entity.DemoObj;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;

@@ -1,9 +1,7 @@
 package com.qs.mvc.controller;
 
-import com.qs.mvc.Entity.DemoObj;
+import com.qs.mvc.entity.DemoObj;
 import com.qs.mvc.service.DemoService;
-import com.sun.org.apache.regexp.internal.RE;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
