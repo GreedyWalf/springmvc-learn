@@ -2,7 +2,7 @@ package com.qs.mvc.util;
 
 import java.io.Serializable;
 
-public class JsonStatus<T> implements Serializable {
+public class JsonResult<T> implements Serializable {
 
     public static final String CODE_OK = "200";
     public static final String CODE_ERROR = "500";

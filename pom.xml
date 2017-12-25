@@ -49,6 +49,20 @@
       <version>${spring-framework.version}</version>
     </dependency>
 
+    <!-- 配置Freemarker模板找不到类 FreeMarkerConfigurationFactory -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${spring-framework.version}</version>
+    </dependency>
+
+    <!--Freemarker依赖-->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.22</version>
+    </dependency>
+
     <!-- 其他Web依赖 -->
     <dependency>
       <groupId>javax.servlet</groupId>
