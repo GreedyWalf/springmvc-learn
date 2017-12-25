@@ -3,6 +3,12 @@ package com.qs.mvc.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.MultipartResolver;
@@ -10,7 +16,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import redis.clients.jedis.JedisPoolConfig;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -120,5 +128,45 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MyMessageConverter converter(){
         return new MyMessageConverter();
+    }
+
+
+    /**
+     * 配置spring-data-redis
+     *
+     * @return
+     */
+    @Bean
+    public JedisPoolConfig jedisPoolConfig(){
+        return new JedisPoolConfig();
+    }
+
+    @Bean
+    public JedisConnectionFactory getJedisConnectionFactory(){
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(jedisPoolConfig());
+        //设置redis连接host、port
+        jedisConnectionFactory.setHostName("localhost");
+        jedisConnectionFactory.setPort(6379);
+        jedisConnectionFactory.setUsePool(true);
+        return jedisConnectionFactory;
+    }
+
+    @Bean
+    public RedisTemplate<Serializable,Serializable> redisTemplate(){
+        RedisTemplate<Serializable, Serializable> redisTemplate = new RedisTemplate<Serializable, Serializable>();
+        redisTemplate.setConnectionFactory(getJedisConnectionFactory());
+        return redisTemplate;
+    }
+
+    //配置通用的redisTemplate
+    @Bean
+    public RedisTemplate<String,String> getRedisTemplate(){
+        RedisTemplate<String, String> redisTemplate = new StringRedisTemplate();
+        RedisSerializer<String> keySerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(keySerializer);
+        JdkSerializationRedisSerializer valueSerializer = new JdkSerializationRedisSerializer();
+        redisTemplate.setValueSerializer(valueSerializer);
+        redisTemplate.setConnectionFactory(getJedisConnectionFactory());
+        return redisTemplate;
     }
 }

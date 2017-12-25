@@ -74,6 +74,13 @@
       <version>${spring-framework.version}</version>
     </dependency>
 
+    <!-- spring结合redis -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>1.0.2.RELEASE</version>
+    </dependency>
+
     <!-- 添加jackson及相关依赖：获得对象和json或xml之间的转换 -->
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
