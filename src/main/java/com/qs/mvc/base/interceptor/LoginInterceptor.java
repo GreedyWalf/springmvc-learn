@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    @Resource(name = "commonRedisTemplate")
-    private RedisTemplate commonRedisTemplate;
+    @Resource(name = "sessionRedisTemplate")
+    private RedisTemplate sessionRedisTemplate;
 
 
     //拦截所有的请求，在请求之前，验证用户的登录状态（在请求之前走拦截器，返回false之后，就不会走再调用请求了）
@@ -30,14 +30,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         session.setMaxInactiveInterval(60);
 
         String sessionId = RequestContextFactory.getCookieValue(request, "session_id");
-        boolean existLoginInfo = StringUtils.isBlank(sessionId) ? false : commonRedisTemplate.hasKey(sessionId);
+        boolean existLoginInfo = StringUtils.isBlank(sessionId) ? false : sessionRedisTemplate.hasKey(sessionId);
         if(StringUtils.isBlank(sessionId) && !request.getRequestURI().contains("/login/login") && !request.getRequestURI().contains("/login/ajaxLogin")){
             response.sendRedirect(request.getContextPath() + "/login/login");
             return false;
         }
 
         if(StringUtils.isNotBlank(sessionId)){
-            Map<String, String> contextMap = (Map<String, String>) commonRedisTemplate.opsForValue().get(sessionId);
+            Map<String, String> contextMap = (Map<String, String>) sessionRedisTemplate.opsForValue().get(sessionId);
             if (contextMap != null) {
                 ExecutionContext.setContextMap(contextMap);
             }

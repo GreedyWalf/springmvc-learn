@@ -2,18 +2,16 @@ package com.qs.mvc.controller.login;
 
 import com.qs.mvc.base.context.ExecutionContext;
 import com.qs.mvc.entity.user.User;
-import com.qs.mvc.util.*;
+import com.qs.mvc.util.JsonResult;
+import com.qs.mvc.util.JsonStatus;
+import com.qs.mvc.util.RequestContextFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.HttpConstraintElement;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-    @Resource(name = "commonRedisTemplate")
-    private RedisTemplate commonRedisTemplate;
+    @Resource(name = "sessionRedisTemplate")
+    private RedisTemplate sessionRedisTemplate;
 
 
     @RequestMapping(value = "/login")
@@ -56,14 +54,14 @@ public class LoginController {
           String sessionKey = "LOGIN_" + userId;
 
         RequestContextFactory.addCookie(response, "session_id", sessionId, -1);
-        commonRedisTemplate.opsForValue().set(sessionKey, sessionId);
+        sessionRedisTemplate.opsForValue().set(sessionKey, sessionId);
         //这里失效时间暂时设置为60s，调试使用
-        commonRedisTemplate.expire(sessionKey, 60, TimeUnit.SECONDS);
+        sessionRedisTemplate.expire(sessionKey, 60, TimeUnit.SECONDS);
 
         Map<String, String> contextMap = new HashMap<String, String>();
         contextMap.put(ExecutionContext.USER_ID, userId);
         contextMap.put(ExecutionContext.USER_NAME, userName);
-        commonRedisTemplate.opsForValue().set(sessionId, contextMap);
+        sessionRedisTemplate.opsForValue().set(sessionId, contextMap);
         return jsonResult;
     }
 
