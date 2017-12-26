@@ -5,6 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,30 +20,31 @@ import java.io.Serializable;
  */
 @Controller //@Controller注解声明是一个控制器
 public class HelloController {
-    @Autowired
-    private RedisTemplate<Serializable, Serializable> serializableRedisTemplate;
-
-    @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    @Resource(name = "commonRedisTemplate")
+    private StringRedisTemplate redisTemplate;
 
     @RequestMapping(value = "/testRedis")
     @ResponseBody
-    public String testRedis(){
-        return redisTemplate.execute(new RedisCallback<String>() {
-            @Override
-            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
-                redisTemplate.opsForValue();
+    public String testRedis() {
+        redisTemplate.opsForValue().set("userName", "qinyupeng");
+        return redisTemplate.opsForValue().get("userName");
 
-                byte[] key = redisTemplate.getStringSerializer().serialize("user_id");
-                byte[] value = redisTemplate.getStringSerializer().serialize("qinyupeng");
-                redisConnection.set(key, value);
-                if (redisConnection.exists(key)) {
-                    String userName = redisTemplate.getStringSerializer().deserialize(redisConnection.get(key));
-                    return userName;
-                }
 
-                return null;
-            }
-        });
+//        return redisTemplate.execute(new RedisCallback<String>() {
+//            @Override
+//            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
+//                redisTemplate.opsForValue();
+//
+//                byte[] key = redisTemplate.getStringSerializer().serialize("user_id");
+//                byte[] value = redisTemplate.getStringSerializer().serialize("qinyupeng");
+//                redisConnection.set(key, value);
+//                if (redisConnection.exists(key)) {
+//                    String userName = redisTemplate.getStringSerializer().deserialize(redisConnection.get(key));
+//                    return userName;
+//                }
+//
+//                return null;
+//            }
+//        });
     }
 }

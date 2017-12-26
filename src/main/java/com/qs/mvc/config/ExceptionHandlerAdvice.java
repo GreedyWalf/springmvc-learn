@@ -21,16 +21,16 @@ import java.util.Date;
 @ControllerAdvice  //声明一个控制器建言
 public class ExceptionHandlerAdvice {
 
-    /**
-     * 当请求出现异常时会执行此方法，此处定义全局处理，返回通用异常处理页面；
-     * 这里的value属性可以指定可过滤拦截的条件，此处拦截所有的Exception；
-     */
-    @ExceptionHandler(value = Exception.class)
-    public ModelAndView exception(Exception exception, WebRequest request) {
-        ModelAndView modelAndView = new ModelAndView("error");  //定义error页面
-        modelAndView.addObject("errorMessage", exception.getMessage());
-        return modelAndView;
-    }
+//    /**
+//     * 当请求出现异常时会执行此方法，此处定义全局处理，返回通用异常处理页面；
+//     * 这里的value属性可以指定可过滤拦截的条件，此处拦截所有的Exception；
+//     */
+//    @ExceptionHandler(value = Exception.class)
+//    public ModelAndView exception(Exception exception, WebRequest request) {
+//        ModelAndView modelAndView = new ModelAndView("error");  //定义error页面
+//        modelAndView.addObject("errorMessage", exception.getMessage());
+//        return modelAndView;
+//    }
 
     /**
      * @ModelAttribute 注解将键值对添加到全局，所有注解@RequestMapping的方法（执行这个方法前）都会获得

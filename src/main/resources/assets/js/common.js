@@ -23,7 +23,6 @@ var setCookie = function (name, value, seconds) {
 
 //获取存储在客户端的cookie信息（登录信息，包括后台代码返回session_id值）
 var getCookie = function (cname) {
-    debugger
     var name = cname + "=";
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {

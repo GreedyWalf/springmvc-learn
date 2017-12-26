@@ -2,12 +2,14 @@ package com.qs.mvc.controller.login;
 
 import com.qs.mvc.entity.user.User;
 import com.qs.mvc.util.JsonResult;
+import com.qs.mvc.util.JsonStatus;
 import com.qs.mvc.util.MyErrorCode;
 import com.qs.mvc.util.MyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.HttpConstraintElement;
@@ -28,9 +30,10 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/ajaxLogin")
+    @ResponseBody
     public JsonResult ajaxLogin(User user, HttpServletRequest request, HttpServletResponse response) {
         JsonResult jsonResult = new JsonResult();
-        jsonResult.setSuccess(true);
+        jsonResult.setStatus(JsonStatus.SUCCESS);
         Assert.notNull(user, "login user is null or empty");
 
         HttpSession session = request.getSession(false);

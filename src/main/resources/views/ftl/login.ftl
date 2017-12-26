@@ -39,13 +39,11 @@
 
 
     $("#btnLogin").click(function () {
-        debugger
         ajajxLogin();
     });
 
 
     var ajajxLogin = function () {
-        debugger
         var $form = $("#loginForm");
         var oldPwd = $form.find("input[name='user.password']").val();
         var newPwd = base64.encode(oldPwd);

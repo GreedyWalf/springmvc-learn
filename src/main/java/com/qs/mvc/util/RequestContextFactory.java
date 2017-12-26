@@ -2,6 +2,9 @@ package com.qs.mvc.util;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 
 public class RequestContextFactory {
 
@@ -33,5 +36,14 @@ public class RequestContextFactory {
         }
 
         return returnCookie;
+    }
+
+    public static void redirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String sourceUrl = request.getRequestURL().toString();
+        if (request.getQueryString() != null) {
+            sourceUrl += "?" + request.getQueryString();
+        }
+
+        response.sendRedirect(request.getContextPath() + "/login/login?returnUrl=" + URLEncoder.encode(sourceUrl, "UTF-8"));
     }
 }
