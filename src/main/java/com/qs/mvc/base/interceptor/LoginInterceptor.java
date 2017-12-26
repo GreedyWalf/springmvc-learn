@@ -1,8 +1,10 @@
-package com.qs.mvc.controller.login;
+package com.qs.mvc.base.interceptor;
 
+import com.qs.mvc.base.context.ExecutionContext;
 import com.qs.mvc.util.RequestContextFactory;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -11,15 +13,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    @Resource(name = "sessionRedisTemplate")
-    private StringRedisTemplate sessionRedisTemplate;
+    @Resource(name = "commonRedisTemplate")
+    private RedisTemplate commonRedisTemplate;
 
 
-    //拦截所有的请求，在请求之前，验证用户的登录状态
+    //拦截所有的请求，在请求之前，验证用户的登录状态（在请求之前走拦截器，返回false之后，就不会走再调用请求了）
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //注意request.getSession(false)之间的区别，默认参数为true，没有session会新建一个session对象
@@ -28,34 +30,21 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         session.setMaxInactiveInterval(60);
 
         String sessionId = RequestContextFactory.getCookieValue(request, "session_id");
-        boolean hasSessionId = StringUtils.isBlank(sessionId) ? false : sessionRedisTemplate.hasKey(sessionId);
-        //是否有登录信息
-        if (BooleanUtils.isFalse(hasSessionId)) {
-            RequestContextFactory.redirectLogin(request, response);
+        boolean existLoginInfo = StringUtils.isBlank(sessionId) ? false : commonRedisTemplate.hasKey(sessionId);
+        if(StringUtils.isBlank(sessionId) && !request.getRequestURI().contains("/login/login") && !request.getRequestURI().contains("/login/ajaxLogin")){
+            response.sendRedirect(request.getContextPath() + "/login/login");
             return false;
         }
 
-        return !setSession(request, response, sessionRedisTemplate, sessionId);
-    }
-
-    private boolean setSession(HttpServletRequest request, HttpServletResponse response, StringRedisTemplate sessionRedisTemplate, String sessionId) throws IOException {
-        //直接存放Context信息，必要的取出来单独放
-        if (StringUtils.isBlank(sessionId)) {
-            RequestContextFactory.redirectLogin(request, response);
-            return true;
+        if(StringUtils.isNotBlank(sessionId)){
+            Map<String, String> contextMap = (Map<String, String>) commonRedisTemplate.opsForValue().get(sessionId);
+            if (contextMap != null) {
+                ExecutionContext.setContextMap(contextMap);
+            }
         }
 
-        String sessionKey = "LOGIN_123";
-        String aSessionId = (String) sessionRedisTemplate.opsForValue().get(sessionKey);
-        if (!sessionId.equalsIgnoreCase(aSessionId)) {
-            RequestContextFactory.redirectLogin(request, response);
-            return true;
-        }
-
-        //重置session
-        sessionRedisTemplate.expire(sessionKey, 30, TimeUnit.MINUTES);
-        sessionRedisTemplate.expire(sessionId, 30, TimeUnit.MINUTES);
-        return false;
+        //已经登录，获取用户登录信息，保存在线程变量中
+        return true;
     }
 
     @Override

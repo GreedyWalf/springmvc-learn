@@ -21,30 +21,12 @@ import java.io.Serializable;
 @Controller //@Controller注解声明是一个控制器
 public class HelloController {
     @Resource(name = "commonRedisTemplate")
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(value = "/testRedis")
     @ResponseBody
     public String testRedis() {
         redisTemplate.opsForValue().set("userName", "qinyupeng");
-        return redisTemplate.opsForValue().get("userName");
-
-
-//        return redisTemplate.execute(new RedisCallback<String>() {
-//            @Override
-//            public String doInRedis(RedisConnection redisConnection) throws DataAccessException {
-//                redisTemplate.opsForValue();
-//
-//                byte[] key = redisTemplate.getStringSerializer().serialize("user_id");
-//                byte[] value = redisTemplate.getStringSerializer().serialize("qinyupeng");
-//                redisConnection.set(key, value);
-//                if (redisConnection.exists(key)) {
-//                    String userName = redisTemplate.getStringSerializer().deserialize(redisConnection.get(key));
-//                    return userName;
-//                }
-//
-//                return null;
-//            }
-//        });
+        return (String) redisTemplate.opsForValue().get("userName");
     }
 }

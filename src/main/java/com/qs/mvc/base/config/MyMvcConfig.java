@@ -1,10 +1,11 @@
-package com.qs.mvc.config;
+package com.qs.mvc.base.config;
 
+import com.qs.mvc.base.interceptor.DemoInterceptor;
+import com.qs.mvc.base.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -15,7 +16,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
 
@@ -103,10 +103,19 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
         return new DemoInterceptor();
     }
 
+    /**
+     * 配置登录拦截器Bean
+     */
+    @Bean
+    public LoginInterceptor doLoginInterceptor(){
+        return new LoginInterceptor();
+    }
+
     //重写WebMvcConfigurerAdapter类的addInterceptors方法，注册拦截器；
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(doDemoInterceptor());
+        registry.addInterceptor(doLoginInterceptor());
     }
 
 
@@ -165,27 +174,5 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MyMessageConverter converter() {
         return new MyMessageConverter();
-    }
-
-    /**
-     * 解决页面中文乱码问题
-     *
-     * @return
-     */
-    @Bean
-    public HttpMessageConverter<String> responseBodyConverter() {
-        StringHttpMessageConverter converter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
-        return converter;
-    }
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        super.configureMessageConverters(converters);
-        converters.add(responseBodyConverter());
-    }
-
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.favorPathExtension(false);
     }
 }

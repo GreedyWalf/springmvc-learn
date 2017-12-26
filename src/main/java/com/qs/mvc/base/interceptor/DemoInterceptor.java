@@ -1,4 +1,4 @@
-package com.qs.mvc.config;
+package com.qs.mvc.base.interceptor;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

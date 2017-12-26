@@ -13,8 +13,8 @@
 
 <div>
     <form id="loginForm" action="login/ajaxLogin">
-        用户名：<input type="text" name="user.userName"/>　<br>
-        密码：<input type="password" name="user.password"/> <br>
+        用户名：<input type="text" name="userName"/>　<br>
+        密码：<input type="password" name="password"/> <br>
         <input type="checkbox" id="rememberMe" name="rememberMe" value="true"/>记住我 <br>
         <input type="button" value="登录" id="btnLogin"/>
     </form>
@@ -27,15 +27,14 @@
 
     //页面加载的时候，在cookie中获取是否已经保存了用户的登录信息
     $(function () {
-        var $userName = $("input[name='user.userName']");
+        var $userName = $("input[name='userName']");
         $userName.focus();
-        if(getCookie("rememberMe") === "true"){
+        if (getCookie("rememberMe") === "true") {
             $("#rememberMe").prop("checked", true);
-            $("input[name='user.userName']").val(getCookie("userName"));
-            $("input[name='user.password']").val(base64.decode(getCookie("password")));
+            $("input[name='userName']").val(getCookie("userName"));
+            $("input[name='password']").val(base64.decode(getCookie("password")));
         }
     });
-
 
 
     $("#btnLogin").click(function () {
@@ -45,16 +44,16 @@
 
     var ajajxLogin = function () {
         var $form = $("#loginForm");
-        var oldPwd = $form.find("input[name='user.password']").val();
+        var oldPwd = $form.find("input[name='password']").val();
         var newPwd = base64.encode(oldPwd);
 
         if ($("#rememberMe").is(":checked")) {
             setCookie("rememberMe", "true", 60);
-            setCookie("userName", $("input[name='user.userName']").val(), 60);
+            setCookie("userName", $("input[name='userName']").val(), 60);
             setCookie("password", newPwd, 60);
         } else {
             setCookie("rememberMe", "false", 0);
-            setCookie("userName", $("input[name='user.userName']").val(), 0);
+            setCookie("userName", $("input[name='userName']").val(), 0);
             setCookie("password", newPwd, 0);
         }
 
@@ -64,17 +63,11 @@
             type: "post",
             data: $form.serialize(),
             success: function (data) {
-                if (data.success) {
+                console.log(data);
+                if (data.status === "SUCCESS") {
                     window.location.href = "${ctx}/login/index";
-                }else{
-                    var code = data.code;
-                    if (code === "500") {
-                        alert("服务器错误！");
-                    } else if (code === "302") {
-                        alert("你的账户已登录");
-                    } else {
-                        alert("异常情况！");
-                    }
+                } else {
+                    alert("登录失败哦！");
                 }
             }
         });

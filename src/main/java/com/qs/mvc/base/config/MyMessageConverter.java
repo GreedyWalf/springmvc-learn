@@ -1,4 +1,4 @@
-package com.qs.mvc.config;
+package com.qs.mvc.base.config;
 
 import com.qs.mvc.entity.DemoObj;
 import org.springframework.http.HttpInputMessage;

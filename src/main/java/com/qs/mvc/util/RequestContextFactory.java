@@ -1,5 +1,7 @@
 package com.qs.mvc.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +15,7 @@ public class RequestContextFactory {
      */
     public static String getCookieValue(HttpServletRequest request, String name) {
         Cookie cookie = getCookie(request, name);
-        if(cookie == null){
+        if (cookie == null) {
             return null;
         }
 
@@ -45,5 +47,17 @@ public class RequestContextFactory {
         }
 
         response.sendRedirect(request.getContextPath() + "/login/login?returnUrl=" + URLEncoder.encode(sourceUrl, "UTF-8"));
+    }
+
+    //添加一个cookie
+    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(value)) {
+            return;
+        }
+
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(maxAge);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 }

@@ -1,14 +1,11 @@
-package com.qs.mvc.config;
+package com.qs.mvc.base.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import redis.clients.jedis.JedisPoolConfig;
-
-import javax.management.MXBean;
 
 @Configuration
 public class RedisConfiguration {
@@ -28,8 +25,8 @@ public class RedisConfiguration {
     }
 
     @Bean(name = "commonRedisTemplate")
-    public StringRedisTemplate getCommonRedisTemplate() {
-        StringRedisTemplate redisTemplate = new StringRedisTemplate();
+    public RedisTemplate getCommonRedisTemplate() {
+        RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(getCommonJedisConnectionFactory());
         return redisTemplate;
     }
@@ -46,7 +43,7 @@ public class RedisConfiguration {
     }
 
     @Bean(name = "sessionRedisTemplate")
-    public StringRedisTemplate getSessionRedisTemplate() {
+    public RedisTemplate getSessionRedisTemplate() {
         StringRedisTemplate redisTemplate = new StringRedisTemplate();
         redisTemplate.setConnectionFactory(getSessionJedisConnectionFactory());
         return redisTemplate;
