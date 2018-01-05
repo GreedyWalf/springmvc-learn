@@ -27,12 +27,6 @@ public class LoginController {
     @Resource(name = "sessionRedisTemplate")
     private RedisTemplate sessionRedisTemplate;
 
-
-    @RequestMapping(value = "/login")
-    public String login() {
-        return "login";
-    }
-
     @RequestMapping(value = "/ajaxLogin")
     @ResponseBody
     public JsonResult ajaxLogin(User user, HttpServletRequest request, HttpServletResponse response) {
@@ -67,7 +61,7 @@ public class LoginController {
 
     @RequestMapping(value = "/index")
     public String showIndex() {
-        return "index";
+        return "/index/index";
     }
 
     private void addCookie(String name, String value, int maxAge, HttpServletResponse response) {

@@ -16,6 +16,9 @@
     <!-- Spring -->
     <spring-framework.version>4.1.5.RELEASE</spring-framework.version>
 
+    <!-- hibernate -->
+    <hibernate.version>4.3.5.Final</hibernate.version>
+
     <!-- Logging -->
     <logback.version>1.0.13</logback.version>
     <slf4j.version>1.7.5</slf4j.version>
@@ -102,21 +105,6 @@
       <version>2.5.3</version>
     </dependency>
 
-    <!-- 现实开发中基本上只需要返回json格式数据，可以只依赖下面的包，上面的包包含了下面这个包 -->
-    <!--<dependency>-->
-      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-      <!--<artifactId>jackson-databind</artifactId>-->
-      <!--<version>2.5.3</version>-->
-    <!--</dependency>-->
-
-    <!--Google Gson-->
-    <!--<dependency>-->
-      <!--<groupId>com.google.code.gson</groupId>-->
-      <!--<artifactId>gson</artifactId>-->
-      <!--<version>2.8.0</version>-->
-    <!--</dependency>-->
-    <!--Gson-->
-
     <!-- 文件上传 -->
     <dependency>
       <groupId>commons-fileupload</groupId>
@@ -127,6 +115,34 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.3</version>
+    </dependency>
+
+    <!-- hibernate配置开始 -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <!--配置使用spring管理事务时需要用到-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring-framework.version}</version>
+    </dependency>
+    <!-- hibernate配置结束 -->
+
+    <!-- postgresql数据库驱动 -->
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.1-901-1.jdbc4</version>
+    </dependency>
+
+    <!-- 连接池 -->
+    <dependency>
+      <groupId>c3p0</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.1.2</version>
     </dependency>
 
     <!-- 使用SLF4J和LogBack作为日志 -->

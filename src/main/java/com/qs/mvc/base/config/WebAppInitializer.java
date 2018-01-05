@@ -14,18 +14,12 @@ import javax.servlet.ServletRegistration;
  *
  * 实现此接口将会自动被SpringServletContainerInitializer（用来启动3.0容器）获取到；
  */
-public class WebInitializer implements WebApplicationInitializer{
+public class WebAppInitializer implements WebApplicationInitializer{
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        //解决页面中文编码乱码问题
-//        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-//        characterEncodingFilter.setEncoding("UTF-8");
-//        characterEncodingFilter.setForceEncoding(true);
-//        servletContext.addFilter("name", characterEncodingFilter).addMappingForUrlPatterns(null, false, "/*");
-
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(MyMvcConfig.class);
+        context.register(WebMvcConfig.class);
         //新建WebApplicationContext，注册配置类，并将其和当前servletContext关联
         context.setServletContext(servletContext);
 
