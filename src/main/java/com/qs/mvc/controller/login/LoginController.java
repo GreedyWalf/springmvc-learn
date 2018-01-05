@@ -2,6 +2,7 @@ package com.qs.mvc.controller.login;
 
 import com.qs.mvc.base.context.ExecutionContext;
 import com.qs.mvc.entity.user.User;
+import com.qs.mvc.service.UserService;
 import com.qs.mvc.util.JsonResult;
 import com.qs.mvc.util.JsonStatus;
 import com.qs.mvc.util.RequestContextFactory;
@@ -26,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class LoginController {
     @Resource(name = "sessionRedisTemplate")
     private RedisTemplate sessionRedisTemplate;
+    @Resource
+    private UserService userService;
 
     @RequestMapping(value = "/ajaxLogin")
     @ResponseBody
@@ -56,6 +59,9 @@ public class LoginController {
         contextMap.put(ExecutionContext.USER_ID, userId);
         contextMap.put(ExecutionContext.USER_NAME, userName);
         sessionRedisTemplate.opsForValue().set(sessionId, contextMap);
+
+        user.setUserId(UUID.randomUUID().toString());
+        userService.save(user);
         return jsonResult;
     }
 

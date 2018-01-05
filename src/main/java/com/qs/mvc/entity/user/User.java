@@ -1,10 +1,24 @@
 package com.qs.mvc.entity.user;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "t_user")
 public class User {
+    @Id
+    @Column(name = "user_id")
     private String userId;
+
+    @Column(name = "user_name")
     private String userName;
+
+    @Column
     private String password;
+
+    @Column
     private String email;
+
+    @Column
     private String mobile;
 
     public String getUserId() {

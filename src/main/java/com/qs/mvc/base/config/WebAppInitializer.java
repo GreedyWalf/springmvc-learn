@@ -3,7 +3,9 @@ package com.qs.mvc.base.config;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -14,21 +16,26 @@ import javax.servlet.ServletRegistration;
  *
  * 实现此接口将会自动被SpringServletContainerInitializer（用来启动3.0容器）获取到；
  */
-public class WebAppInitializer implements WebApplicationInitializer{
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    //指定配置类
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class<?>[]{RootConfig.class};
+    }
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(WebMvcConfig.class);
-        //新建WebApplicationContext，注册配置类，并将其和当前servletContext关联
-        context.setServletContext(servletContext);
-
-        //注册SpringMvc的DispatcherServlet
-        ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
-        servlet.addMapping("/");
-        servlet.setLoadOnStartup(1);
-
-        //开启容器对异步方法的支持
-        servlet.setAsyncSupported(true);
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class<?>[]{WebConfig.class};
     }
+
+    //将DispatchServlet映射到“/”
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{"/"};
+    }
+
+//    @Override
+//    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+//        new MultipartConfigElement("/temp",2097152,4194304,0);
+//    }
 }

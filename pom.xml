@@ -90,6 +90,24 @@
       <artifactId>spring-tx</artifactId>
       <version>${spring-framework.version}</version>
     </dependency>
+    <!--数据库-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring-framework.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-expression</artifactId>
+      <version>${spring-framework.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${spring-framework.version}</version>
+    </dependency>
 
     <!-- spring结合redis -->
     <dependency>
@@ -131,11 +149,25 @@
     </dependency>
     <!-- hibernate配置结束 -->
 
-    <!-- postgresql数据库驱动 -->
+    <!-- aspectjweaver.jar这是Spring AOP所要用到的包 -->
     <dependency>
-      <groupId>postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>9.1-901-1.jdbc4</version>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.7.1</version>
+    </dependency>
+
+    <!-- postgresql数据库驱动 -->
+    <!--<dependency>-->
+      <!--<groupId>postgresql</groupId>-->
+      <!--<artifactId>postgresql</artifactId>-->
+      <!--<version>9.1-901-1.jdbc4</version>-->
+    <!--</dependency>-->
+
+    <!--  mysql -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.9</version>
     </dependency>
 
     <!-- 连接池 -->
