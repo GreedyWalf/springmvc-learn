@@ -18,8 +18,8 @@ public class UserService {
     @Resource
     private SessionFactory sessionFactory;
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = false)
+    @Transactional
     public String save(User user) {
-        return (String) sessionFactory.openSession().save(user);
+        return (String) sessionFactory.getCurrentSession().save(user);
     }
 }

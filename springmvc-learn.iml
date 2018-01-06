@@ -4,10 +4,7 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset" name="Spring Application Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/java/com/qs/mvc/base/config/RedisConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/qs/mvc/base/config/DbConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/qs/mvc/base/config/WebMvcConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/resources/spring-transaction.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qs/mvc/config/MyMvcConfig.java</file>
         </fileset>
       </configuration>
     </facet>
@@ -83,7 +80,7 @@
     <orderEntry type="library" name="Maven: org.jboss:jandex:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:4.1.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.7.1" level="project" />
-    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.9" level="project" />
+    <orderEntry type="library" name="Maven: postgresql:postgresql:9.1-901-1.jdbc4" level="project" />
     <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
