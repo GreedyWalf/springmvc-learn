@@ -1,11 +1,13 @@
 package com.qs.mvc.base.config;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import sun.rmi.runtime.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,15 +19,19 @@ import java.util.Date;
  */
 @ControllerAdvice  //声明一个控制器建言
 public class ExceptionHandlerAdvice {
+    private final static Logger LOG = Logger.getLogger(ExceptionHandlerAdvice.class);
 
     /**
      * 当请求出现异常时会执行此方法，此处定义全局处理，返回通用异常处理页面；
      * 这里的value属性可以指定可过滤拦截的条件，此处拦截所有的Exception；
+     *
+     * 注意：经过测试发现，只有在controller中get请求时才会跳转页面，post请求不会；
      */
     @ExceptionHandler(value = Exception.class)
     public ModelAndView exception(Exception exception, WebRequest request) {
         ModelAndView modelAndView = new ModelAndView("error");  //定义error页面
-        modelAndView.addObject("errorMessage", exception.getMessage());
+        modelAndView.addObject("errorMessage", exception);
+        LOG.error(exception);
         return modelAndView;
     }
 
