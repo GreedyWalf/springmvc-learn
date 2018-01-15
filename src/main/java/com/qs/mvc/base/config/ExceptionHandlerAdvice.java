@@ -27,13 +27,13 @@ public class ExceptionHandlerAdvice {
      *
      * 注意：经过测试发现，只有在controller中get请求时才会跳转页面，post请求不会；
      */
-    @ExceptionHandler(value = Exception.class)
-    public ModelAndView exception(Exception exception, WebRequest request) {
-        ModelAndView modelAndView = new ModelAndView("error");  //定义error页面
-        modelAndView.addObject("errorMessage", exception);
-        LOG.error(exception);
-        return modelAndView;
-    }
+//    @ExceptionHandler(value = Exception.class)
+//    public ModelAndView exception(Exception exception, WebRequest request) {
+//        ModelAndView modelAndView = new ModelAndView("error");  //定义error页面
+//        modelAndView.addObject("errorMessage", exception);
+//        LOG.error(exception);
+//        return modelAndView;
+//    }
 
     /**
      * @ModelAttribute 注解将键值对添加到全局，所有注解@RequestMapping的方法（执行这个方法前）都会获得

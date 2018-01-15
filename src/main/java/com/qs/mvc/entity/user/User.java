@@ -1,13 +1,12 @@
 package com.qs.mvc.entity.user;
 
+import com.qs.mvc.entity.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "t_user")
-public class User {
-    @Id
-    @Column(name = "user_id")
-    private String userId;
+@Table(name = "t_mm_user")
+public class User extends BaseEntity {
 
     @Column(name = "user_name")
     private String userName;
@@ -20,14 +19,6 @@ public class User {
 
     @Column
     private String mobile;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getUserName() {
         return userName;

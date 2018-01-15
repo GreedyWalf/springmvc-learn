@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
@@ -80,34 +81,10 @@ public class HibernateConfig {
         return sessionFactoryBean;
     }
 
-    public SessionFactory sessionFactory(){
-        return localSessionFactoryBean().getObject();
+    @Bean(name = "jdbcTemplate")
+    public JdbcTemplate getJdbcTemplate(){
+        return new JdbcTemplate(getDataSourse());
     }
-
-//    @Bean(name = "transactionManager")
-//    public HibernateTransactionManager hibernateTransactionManager(){
-//        HibernateTransactionManager hbmTransactionManager = new HibernateTransactionManager();
-//        hbmTransactionManager.setDataSource(getDataSourse());
-//        hbmTransactionManager.setSessionFactory(localSessionFactoryBean().getObject());
-//        return hbmTransactionManager;
-//    }
-//
-//    @Bean(name="transactionInterceptor")
-//    public TransactionInterceptor interceptor(){
-//        TransactionInterceptor interceptor = new TransactionInterceptor();
-//        interceptor.setTransactionManager(hibernateTransactionManager());
-//
-//        Properties transactionAttributes = new Properties();
-//        transactionAttributes.setProperty("save*", "PROPAGATION_REQUIRED");
-//        transactionAttributes.setProperty("del*", "PROPAGATION_REQUIRED");
-//        transactionAttributes.setProperty("update*", "PROPAGATION_REQUIRED");
-//        transactionAttributes.setProperty("get*", "PROPAGATION_REQUIRED,readOnly");
-//        transactionAttributes.setProperty("find*", "PROPAGATION_REQUIRED,readOnly");
-//        transactionAttributes.setProperty("*", "PROPAGATION_REQUIRED");
-//
-//        interceptor.setTransactionAttributes(transactionAttributes);
-//        return interceptor;
-//    }
 
     /**
      * 使用@Value注解 需要注入propertySourcesPlaceholderConfigurer对象（spring3.0之后推荐使用）

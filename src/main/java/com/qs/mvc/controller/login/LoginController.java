@@ -6,6 +6,7 @@ import com.qs.mvc.service.UserService;
 import com.qs.mvc.util.JsonResult;
 import com.qs.mvc.util.JsonStatus;
 import com.qs.mvc.util.RequestContextFactory;
+import com.qs.mvc.util.UUIDGenerator;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -60,7 +62,9 @@ public class LoginController {
         contextMap.put(ExecutionContext.USER_NAME, userName);
         sessionRedisTemplate.opsForValue().set(sessionId, contextMap);
 
-        user.setUserId(UUID.randomUUID().toString());
+//        user.setId(UUID.randomUUID().toString());
+        user.setCreateTime(new Date());
+        user.setCreateBy(UUIDGenerator.uuid());
         userService.save(user);
         return jsonResult;
     }
