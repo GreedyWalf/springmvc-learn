@@ -51,7 +51,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public FreeMarkerConfigurer freeMarkerConfigurer() {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         //设置使用freemarker模板所在目录
-        configurer.setTemplateLoaderPath("/WEB-INF/classes/views/");
+        configurer.setTemplateLoaderPath("classpath:/views");
         //设置freemarker模板默认使用编码UTF-8
         configurer.setDefaultEncoding("UTF-8");
 

@@ -10,11 +10,29 @@ import com.qs.mvc.entity.BaseEntity;
 public interface BaseService<T extends BaseEntity>  {
 
     /**
-     * 根据传入的实体是否主键被设置来判断是执行插入（主键未设置）
-     * 或者更新操作（主键被调用方设置了）
+     * 保存实体到数据库中，如果没有设置主键，则使用uuid生成主键；（只是插入操作）
      *
      * @param model 要保存的实体。
      * @return 保存实体的主键。
      */
     String save(T model);
+
+    /**
+     * 根据传入的实体是否主键被设置来判断是执行插入（未设置主键插入，设置主键更新）
+     * 或者更新操作（主键被调用方设置了）
+     *
+     * @param model 需要执行插入或更新的实体
+     * @return 保存或更新的实体主键。
+     */
+    String saveOrUpdate(T model);
+
+
+    /**
+     * 该方法用于根据实体主键获取实体类
+     * <p>load Hibernate load</p>
+     *
+     * @param modelId 实体主键
+     * @return 对应实体T
+     */
+    T load(String modelId);
 }

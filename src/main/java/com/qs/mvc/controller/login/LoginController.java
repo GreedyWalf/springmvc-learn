@@ -40,17 +40,16 @@ public class LoginController {
         String userName = user.getUserName();
         String password = user.getPassword();
         HttpSession session = request.getSession(false);
-         if (session == null) {
+        if (session == null) {
             jsonResult.setStatus(JsonStatus.ERROR);
             jsonResult.setMessage("非法登录，不知道是怎么登录的！");
             return jsonResult;
         }
 
         //后台生成一个sessionId，存储到cookie和redis中
-        String sessionId = UUID.randomUUID().toString();
-
-        String userId = UUID.randomUUID().toString();
-          String sessionKey = "LOGIN_" + userId;
+        String sessionId =UUIDGenerator.uuid();
+        String userId = UUIDGenerator.uuid();
+        String sessionKey = "LOGIN_" + userId;
 
         RequestContextFactory.addCookie(response, "session_id", sessionId, -1);
         sessionRedisTemplate.opsForValue().set(sessionKey, sessionId);
@@ -62,9 +61,10 @@ public class LoginController {
         contextMap.put(ExecutionContext.USER_NAME, userName);
         sessionRedisTemplate.opsForValue().set(sessionId, contextMap);
 
-//        user.setId(UUID.randomUUID().toString());
+        //将登录的用户信息存在数据库中
+        user.setId(userId);
         user.setCreateTime(new Date());
-        user.setCreateBy(UUIDGenerator.uuid());
+        user.setCreateBy(userId);
         userService.save(user);
         return jsonResult;
     }

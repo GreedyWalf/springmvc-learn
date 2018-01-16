@@ -76,6 +76,7 @@ public class HibernateConfig {
         hbmProperties.setProperty("hibernate.hbm2ddl.auto", hbm2ddlAuto);
         hbmProperties.setProperty("hibernate.show_sql", showSql);
         hbmProperties.setProperty("hibernate.format_sql", formatSql);
+//        hbmProperties.setProperty("javax.persistence.validation.mode", "none");
 
         sessionFactoryBean.setHibernateProperties(hbmProperties);
         return sessionFactoryBean;

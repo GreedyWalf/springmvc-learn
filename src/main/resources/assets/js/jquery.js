@@ -201,7 +201,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 	for ( ; i < length; i++ ) {
 		// Only deal with non-null/undefined values
 		if ( (options = arguments[ i ]) != null ) {
-			// Extend the base object
+			// Extend the java.base object
 			for ( name in options ) {
 				src = target[ name ];
 				copy = options[ name ];
@@ -9831,7 +9831,7 @@ jQuery.ajaxTransport( "script", function(s) {
 					}
 				};
 
-				// Circumvent IE6 bugs with base elements (#2709 and #4378) by prepending
+				// Circumvent IE6 bugs with java.base elements (#2709 and #4378) by prepending
 				// Use native DOM manipulation to avoid our domManip AJAX trickery
 				head.insertBefore( script, head.firstChild );
 			},
