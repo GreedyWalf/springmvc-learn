@@ -14,6 +14,8 @@ import java.util.List;
 
 @Repository
 public class HibernateBaseService {
+    @Resource
+    private JdbcTemplate jdbcTemplate;
 
     private HibernateTemplate hibernateTemplate;
 
@@ -33,8 +35,6 @@ public class HibernateBaseService {
         return hibernateTemplate.getSessionFactory().getCurrentSession();
     }
 
-    @Resource
-    private JdbcTemplate jdbcTemplate;
 
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;

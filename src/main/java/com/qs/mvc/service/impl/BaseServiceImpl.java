@@ -4,7 +4,9 @@ import com.qs.mvc.entity.BaseEntity;
 import com.qs.mvc.service.HibernateBaseService;
 import com.qs.mvc.service.base.BaseService;
 import com.qs.mvc.util.ReflectUtil;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -17,8 +19,24 @@ public class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
 
     protected final Class<T> modelClass;
 
+    //实例化时完成modelClass属性的赋值
     public BaseServiceImpl(){
         modelClass = ReflectUtil.getGenericParamClass(this.getClass());
+    }
+
+    //获取实体类名
+    protected String getEntityName(){
+        return ClassUtils.getShortClassName(modelClass.getName());
+    }
+
+    //获取criteria对象
+    protected Criteria createCriteria(){
+        return baseService.getSession().createCriteria(modelClass);
+    }
+
+    //指定实体，实例化获取criteria对象
+    protected Criteria createCriteria(Class<T> clazz){
+        return baseService.getSession().createCriteria(clazz);
     }
 
     @Override

@@ -7,9 +7,9 @@ import com.qs.mvc.util.JsonResult;
 import com.qs.mvc.util.JsonStatus;
 import com.qs.mvc.util.RequestContextFactory;
 import com.qs.mvc.util.UUIDGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,9 +36,7 @@ public class LoginController {
     @ResponseBody
     public JsonResult ajaxLogin(User user, HttpServletRequest request, HttpServletResponse response) {
         JsonResult jsonResult = new JsonResult();
-
         String userName = user.getUserName();
-        String password = user.getPassword();
         HttpSession session = request.getSession(false);
         if (session == null) {
             jsonResult.setStatus(JsonStatus.ERROR);
@@ -46,9 +44,23 @@ public class LoginController {
             return jsonResult;
         }
 
+        User userOld = userService.findByUserName(user.getUserName());
+        if (userOld == null) {
+            jsonResult.setStatus(JsonStatus.ERROR);
+            jsonResult.setMessage("登录信息不存在");
+            return jsonResult;
+        }
+
+        if (!userOld.getPassword().equals(user.getPassword())) {
+            jsonResult.setStatus(JsonStatus.ERROR);
+            jsonResult.setMessage("密码不正确");
+            return jsonResult;
+        }
+
+        //用户id
+        String userId = userOld.getId();
         //后台生成一个sessionId，存储到cookie和redis中
-        String sessionId =UUIDGenerator.uuid();
-        String userId = UUIDGenerator.uuid();
+        String sessionId = UUIDGenerator.uuid();
         String sessionKey = "LOGIN_" + userId;
 
         RequestContextFactory.addCookie(response, "session_id", sessionId, -1);
@@ -61,11 +73,7 @@ public class LoginController {
         contextMap.put(ExecutionContext.USER_NAME, userName);
         sessionRedisTemplate.opsForValue().set(sessionId, contextMap);
 
-        //将登录的用户信息存在数据库中
-        user.setId(userId);
-        user.setCreateTime(new Date());
-        user.setCreateBy(userId);
-        userService.save(user);
+        jsonResult.setMessage("恭喜你，登录成功啦！！");
         return jsonResult;
     }
 
@@ -75,7 +83,7 @@ public class LoginController {
     }
 
     private void addCookie(String name, String value, int maxAge, HttpServletResponse response) {
-        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(value)) {
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(value)) {
             return;
         }
 
@@ -83,6 +91,31 @@ public class LoginController {
         cookie.setMaxAge(maxAge);
         cookie.setPath("/");
         response.addCookie(cookie);
+    }
+
+    @RequestMapping("/register")
+    private String register(){
+        return "/login/register";
+    }
+
+    @RequestMapping("/ajaxRegister")
+    @ResponseBody
+    private JsonResult ajaxRegister(User user){
+        JsonResult jsonResult = new JsonResult();
+        if(StringUtils.isBlank(user.getPassword()) || StringUtils.isBlank(user.getUserName())){
+            jsonResult.setMessage("用户名或密码为空！");
+            jsonResult.setStatus(JsonStatus.ERROR);
+            return jsonResult;
+        }
+
+        User userOld = userService.findByUserName(user.getUserName());
+        if(userOld != null){
+            jsonResult.setMessage("当前用户名已经注册，换一个吧");
+        }
+
+        //todo 保存登录用户信息
+
+        return jsonResult;
     }
 
 }

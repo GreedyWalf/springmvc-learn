@@ -16,7 +16,7 @@
         用户名：<input type="text" name="userName"/>　<br>
         密码：<input type="password" name="password"/> <br>
         <input type="checkbox" id="rememberMe" name="rememberMe" value="true"/>记住我 <br>
-        <input type="button" value="登录" id="btnLogin"/>
+        <input type="button" value="登录" id="btnLogin"/>  <a href="${ctx!}/login/register">注册</a>
     </form>
 </div>
 </body>
@@ -36,13 +36,18 @@
         }
     });
 
-
+    //登录
     $("#btnLogin").click(function () {
-        ajajxLogin();
+        ajaxLogin();
+    });
+
+    //注册
+    $("#btnRegister").click(function(){
+        window.location.href="${ctx}/login/register";
     });
 
 
-    var ajajxLogin = function () {
+    var ajaxLogin = function () {
         var $form = $("#loginForm");
         var oldPwd = $form.find("input[name='password']").val();
         var newPwd = base64.encode(oldPwd);
@@ -65,14 +70,14 @@
             success: function (data) {
                 console.log(data);
                 if (data.status === "SUCCESS") {
+                    alert(data.message);
                     window.location.href = "${ctx}/login/index";
                 } else {
-                    alert("登录失败哦！");
+                    alert(data.message || "登录失败哦！");
                 }
             }
         });
     };
-
 
     function Base64() {
         // private property

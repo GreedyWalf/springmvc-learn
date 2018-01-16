@@ -10,7 +10,7 @@ import com.qs.mvc.entity.BaseEntity;
 public interface BaseService<T extends BaseEntity>  {
 
     /**
-     * 保存实体到数据库中，如果没有设置主键，则使用uuid生成主键；（只是插入操作）
+     * 保存实体到数据库中，如果没有设置主键，则使用uuid生成主键；（插入操作,主键由hibernate uuid生成）
      *
      * @param model 要保存的实体。
      * @return 保存实体的主键。
@@ -25,7 +25,6 @@ public interface BaseService<T extends BaseEntity>  {
      * @return 保存或更新的实体主键。
      */
     String saveOrUpdate(T model);
-
 
     /**
      * 该方法用于根据实体主键获取实体类
