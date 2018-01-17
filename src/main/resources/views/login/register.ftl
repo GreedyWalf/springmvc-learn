@@ -38,7 +38,7 @@
                 type: "post",
                 data: $registerForm.serialize(),
                 success: function (data) {
-                    if (data.success) {
+                    if (data.status === "SUCCESS") {
                         alert(data.message || "注册成功");
                     } else {
                         alert(data.message || "好像出现问题了，失败咯！");

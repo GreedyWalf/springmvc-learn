@@ -7,6 +7,7 @@ import com.qs.mvc.util.ReflectUtil;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -16,6 +17,7 @@ import javax.annotation.Resource;
 public class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
     @Resource
     protected HibernateBaseService baseService;
+
 
     protected final Class<T> modelClass;
 
@@ -65,5 +67,16 @@ public class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
     public T load(String modelId) {
         Assert.hasText(modelId, "modelId is empty!");
         return baseService.load(modelClass, modelId);
+    }
+
+    @Override
+    @Transactional(readOnly = false,isolation = Isolation.READ_COMMITTED)
+    public T insertEntity(T model) {
+        String id = model.getId();
+        Assert.notNull(id,"insert entity id is not null");
+
+        JdbcTemplate jdbcTemplate = baseService.getJdbcTemplate();
+        jdbcTemplate.update();
+        return null;
     }
 }

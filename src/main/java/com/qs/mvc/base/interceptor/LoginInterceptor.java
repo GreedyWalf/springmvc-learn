@@ -24,6 +24,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     //拦截所有的请求，在请求之前，验证用户的登录状态（在请求之前走拦截器，返回false之后，就不会走再调用请求了）
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //如果是登录、注册链接，不拦截
+        if(request.getRequestURI().contains("/login/login") || request.getRequestURI().contains("/login/ajaxLogin")
+                || request.getRequestURI().contains("/login/register") || request.getRequestURI().contains("/login/ajaxRegister")){
+            return true;
+        }
+
+
         //注意request.getSession(false)之间的区别，默认参数为true，没有session会新建一个session对象
         HttpSession session = request.getSession();
         //所有非登录请求Session失效时长为1分钟
@@ -31,7 +38,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         String sessionId = RequestContextFactory.getCookieValue(request, "session_id");
         boolean existLoginInfo = StringUtils.isBlank(sessionId) ? false : sessionRedisTemplate.hasKey(sessionId);
-        if(StringUtils.isBlank(sessionId) && !request.getRequestURI().contains("/login/login") && !request.getRequestURI().contains("/login/ajaxLogin")){
+        if(StringUtils.isBlank(sessionId)){
             response.sendRedirect(request.getContextPath() + "/login/login");
             return false;
         }

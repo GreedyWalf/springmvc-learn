@@ -34,4 +34,6 @@ public interface BaseService<T extends BaseEntity>  {
      * @return 对应实体T
      */
     T load(String modelId);
+
+    T insertEntity(T model);
 }
