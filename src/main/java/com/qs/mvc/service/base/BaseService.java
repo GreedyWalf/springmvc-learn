@@ -35,5 +35,5 @@ public interface BaseService<T extends BaseEntity>  {
      */
     T load(String modelId);
 
-    T insertEntity(T model);
+    int insertEntity(String[] fields, String values[], T model);
 }

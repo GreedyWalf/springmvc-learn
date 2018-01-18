@@ -3,18 +3,24 @@ package com.qs.mvc.service.impl;
 import com.qs.mvc.entity.BaseEntity;
 import com.qs.mvc.service.HibernateBaseService;
 import com.qs.mvc.service.base.BaseService;
+import com.qs.mvc.util.HqlBuilder;
 import com.qs.mvc.util.ReflectUtil;
+import com.qs.mvc.util.SQLConstant;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
-public class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
+public class BaseServiceImpl<T extends BaseEntity> implements BaseService<T>,SQLConstant {
     @Resource
     protected HibernateBaseService baseService;
 
@@ -70,13 +76,35 @@ public class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
     }
 
     @Override
-    @Transactional(readOnly = false,isolation = Isolation.READ_COMMITTED)
-    public T insertEntity(T model) {
-        String id = model.getId();
-        Assert.notNull(id,"insert entity id is not null");
+    @Transactional(readOnly = false)
+    public int insertEntity(String[] fields, String values[], T model) {
+        Assert.hasText(model.getId(), "primary key is must not null");
+        Assert.noNullElements(fields);
+        Assert.noNullElements(values);
 
-        JdbcTemplate jdbcTemplate = baseService.getJdbcTemplate();
-        jdbcTemplate.update();
-        return null;
+        HqlBuilder builder = new HqlBuilder();
+        builder.append(INSERT).append(INTO).append(getEntityName());
+        builder.append(LEFT_BRACKET);
+        for (int i = 0; i < fields.length; i++) {
+            builder.append(fields[i]).append(COMMA);
+            if (i == fields.length - 1) {
+                builder.append(fields[i]);
+            }
+        }
+
+        builder.append(RIGHT_BRACKET);
+        builder.append(VALUES).append(LEFT_BRACKET);
+        for (int i = 0; i < values.length; i++) {
+            builder.append(values[i]).append(COMMA);
+            if (i == values.length - 1) {
+                builder.append(values[i]);
+            }
+        }
+
+        builder.append(RIGHT_BRACKET);
+
+        Query query = baseService.getSession().createQuery(builder.toString());
+        return query.executeUpdate();
     }
+
 }

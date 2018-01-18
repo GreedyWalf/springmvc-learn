@@ -113,8 +113,12 @@ public class LoginController {
             jsonResult.setMessage("当前用户名已经注册，换一个吧");
         }
 
-        //todo 保存登录用户信息
-
+        user.setId(UUIDGenerator.uuid());
+        user.setUserName("qinyupeng");
+        user.setPassword("000000");
+        user.setEmail("000000");
+        user.setMobile("000000");
+        userService.insertUser(user);
         return jsonResult;
     }
 
