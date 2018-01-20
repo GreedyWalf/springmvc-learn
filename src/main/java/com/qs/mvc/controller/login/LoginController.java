@@ -113,11 +113,10 @@ public class LoginController {
             jsonResult.setMessage("当前用户名已经注册，换一个吧");
         }
 
-        user.setId(UUIDGenerator.uuid());
-        user.setUserName("qinyupeng");
-        user.setPassword("000000");
-        user.setEmail("000000");
-        user.setMobile("000000");
+        String userId = UUIDGenerator.uuid();
+        user.setId(userId);
+        user.setCreateTime(new Date());
+        user.setCreateBy(userId);
         userService.insertUser(user);
         return jsonResult;
     }

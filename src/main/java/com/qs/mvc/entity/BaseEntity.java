@@ -1,5 +1,7 @@
 package com.qs.mvc.entity;
 
+import com.qs.mvc.util.UUIDGenerator;
+import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
