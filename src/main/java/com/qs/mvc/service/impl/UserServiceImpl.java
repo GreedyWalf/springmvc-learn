@@ -52,11 +52,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
             user.setCreateBy(userId);
         }
 
+        //调用session的save方法后，会自动生成主键
         String _id = save(user);
-        Query query = baseService.getSession().createQuery("update User set id=? where id=?");
-        query.setParameter(0, userId);
-        query.setParameter(1, _id);
-        int len = query.executeUpdate();
+        //将自动生成的主键更新为自己设置的主键
+        update("id", userId, user);
         return userId;
     }
 }
