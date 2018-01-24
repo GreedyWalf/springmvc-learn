@@ -6114,7 +6114,7 @@ function defaultDisplay( nodeName ) {
 		body.appendChild( container ).appendChild( div );
 
 		// Support: IE6
-		// Check if elements with layout shrink-wrap their children
+		// Check if elements with layout shrink-wrap.ftl their children
 		if ( typeof div.style.zoom !== strundefined ) {
 			// Reset CSS: box-sizing; display; margin; border
 			div.style.cssText =
@@ -9390,7 +9390,7 @@ jQuery.fn.extend({
 		}
 
 		if ( this[0] ) {
-			// The elements to wrap the target around
+			// The elements to wrap.ftl the target around
 			var wrap = jQuery( html, this[0].ownerDocument ).eq(0).clone(true);
 
 			if ( this[0].parentNode ) {

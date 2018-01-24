@@ -100,6 +100,14 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         //跳转到登陆页面
         registry.addViewController("/login/login").setViewName("/login/login");
+
+
+        //测试layui页面渲染效果
+        registry.addViewController("/lay/form").setViewName("/layui/form");  //表单
+        registry.addViewController("/lay/menu").setViewName("/layui/menu");  //菜单
+        registry.addViewController("/lay/wrap").setViewName("/layui/wrap");  //布局
+        registry.addViewController("/lay/wrapForm").setViewName("/layui/wrapForm");  //布局1
+        registry.addViewController("/lay/wrapMenu").setViewName("/layui/wrapMenu");  //布局2
     }
 
     /**
