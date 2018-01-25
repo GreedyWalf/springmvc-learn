@@ -108,6 +108,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/lay/wrap").setViewName("/layui/wrap");  //布局
         registry.addViewController("/lay/wrapForm").setViewName("/layui/wrapForm");  //布局1
         registry.addViewController("/lay/wrapMenu").setViewName("/layui/wrapMenu");  //布局2
+        registry.addViewController("/widgets/jqtree").setViewName("/widgets/jqtree");  //jqxtree
     }
 
     /**
