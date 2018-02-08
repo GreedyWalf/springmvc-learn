@@ -42,16 +42,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         }
 
         String userId = user.getId();
-        Date createTime = user.getCreateTime();
-        if(createTime == null){
-           user.setCreateTime(new Date());
-        }
-
-        String createBy = user.getCreateBy();
-        if(StringUtils.isBlank(createBy)){
-            user.setCreateBy(userId);
-        }
-
         //调用session的save方法后，会自动生成主键
         String _id = save(user);
         //将自动生成的主键更新为自己设置的主键

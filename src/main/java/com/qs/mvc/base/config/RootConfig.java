@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 
 @Configuration
 @Import(HibernateConfig.class)//导入Hibernate配置文件
-@ComponentScan(basePackages={"com.qs.mvc"},
-        excludeFilters={
-                @ComponentScan.Filter(type= FilterType.CUSTOM, value=RootConfig.WebPackage.class)
+@ComponentScan(basePackages = {"com.qs.mvc"},
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.CUSTOM, value = RootConfig.WebPackage.class)
         }
 )
 public class RootConfig {

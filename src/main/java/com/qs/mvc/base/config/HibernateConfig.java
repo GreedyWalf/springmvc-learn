@@ -1,6 +1,7 @@
 package com.qs.mvc.base.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.qs.mvc.service.base.interceptor.BaseModelInterceptor;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,6 +69,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean localSessionFactoryBean() {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(getDataSourse());
+        sessionFactoryBean.setEntityInterceptor(new BaseModelInterceptor());
 
         //扫描实体类
         sessionFactoryBean.setPackagesToScan("com.qs.mvc.entity");
